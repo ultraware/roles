@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles\Traits;
+namespace SlFomin\Roles\Traits;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;

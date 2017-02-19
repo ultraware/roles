@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles\Models;
+namespace SlFomin\Roles\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Ultraware\Roles\Contracts\PermissionHasRelations as PermissionHasRelationsContract;

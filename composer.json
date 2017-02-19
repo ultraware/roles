@@ -1,14 +1,6 @@
 {
   "name": "slfomin/roles",
   "description": "Powerful package for handling roles and permissions in Laravel 5.4  Forked from ultraware/roles",
-  "keywords": [
-    "roles",
-    "permissions",
-    "acl",
-    "auth",
-    "laravel",
-    "illuminate"
-  ],
   "license": "MIT",
   "authors": [
     {
@@ -21,7 +13,7 @@
   },
   "autoload": {
     "psr-4": {
-      "SlFomin\\Roles\\": "src/"
+      "Slfomin\\Roles\\": "src/"
     }
   }
 }
