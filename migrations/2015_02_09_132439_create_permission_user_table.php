@@ -29,6 +29,6 @@ class CreatePermissionUserTable extends Migration
      */
     public function down()
     {
-        Schema::drop('permission_user');
+        Schema::dropIfExists('permission_user');
     }
 }

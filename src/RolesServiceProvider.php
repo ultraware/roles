@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles;
+namespace SlFomin\Roles;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -56,16 +56,6 @@ class RolesServiceProvider extends ServiceProvider
         });
 
         $blade->directive('endpermission', function () {
-            return '<?php endif; ?>';
-        });
-
-        $blade->directive('level', function ($expression) {
-            $level = trim($expression, '()');
-
-            return "<?php if (Auth::check() && Auth::user()->level() >= {$level}): ?>";
-        });
-
-        $blade->directive('endlevel', function () {
             return '<?php endif; ?>';
         });
 

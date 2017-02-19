@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles\Middleware;
+namespace SlFomin\Roles\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;

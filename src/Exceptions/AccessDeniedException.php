@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles\Exceptions;
+namespace SlFomin\Roles\Exceptions;
 
 use Exception;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles\Contracts;
+namespace SlFomin\Roles\Contracts;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -88,13 +88,6 @@ interface HasRoleAndPermission
      * @return array
      */
     public function syncRoles($roles);
-
-    /**
-     * Get role level of a user.
-     *
-     * @return int
-     */
-    public function level();
 
     /**
      * Get all permissions from roles.
