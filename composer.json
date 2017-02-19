@@ -1,6 +1,6 @@
 {
-  "name": "ultraware/roles",
-  "description": "Powerful package for handling roles and permissions in Laravel 5.",
+  "name": "slfomin/roles",
+  "description": "Powerful package for handling roles and permissions in Laravel 5.4  Forked from ultraware/roles",
   "keywords": [
     "roles",
     "permissions",
@@ -12,7 +12,7 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Ultraware"
+      "name": "SlFomin"
     }
   ],
   "require": {
@@ -21,21 +21,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Ultraware\\Roles\\": "src/"
+      "SlFomin\\Roles\\": "src/"
     }
-  },
-  "require-dev": {
-    "orchestra/database": "@dev",
-    "orchestra/testbench": "@dev",
-    "mockery/mockery": "^0.9.6",
-    "phpunit/phpunit": "^5.6",
-    "satooshi/php-coveralls": "1.0.*",
-    "sebastian/environment": "2.0.*"
-  },
-  "autoload-dev": {
-    "classmap": [
-      "tests/TestCase.php",
-      "tests/User.php"
-    ]
   }
 }

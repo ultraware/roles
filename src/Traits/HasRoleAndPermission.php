@@ -44,7 +44,13 @@ trait HasRoleAndPermission
      */
     public function getRoles()
     {
-        return (!$this->roles) ? $this->roles = $this->roles()->get() : $this->roles;
+        if(!$this->roles){
+            $this->roles = $this->roles()->get();
+
+            foreach($this->roles as $role)
+                    $this->roles = $this->roles->merge($role->descendants());
+        }
+        return  $this->roles;
     }
 
     /**
@@ -122,11 +128,7 @@ trait HasRoleAndPermission
      */
     public function attachRole($role)
     {
-        if ($this->getRoles()->contains($role)) {
-            return true;
-        }
-        $this->roles = null;
-        return $this->roles()->attach($role);
+        return (!$this->getRoles()->contains($role)) ? $this->roles()->attach($role) : true;
     }
 
     /**
@@ -168,16 +170,6 @@ trait HasRoleAndPermission
     }
 
     /**
-     * Get role level of a user.
-     *
-     * @return int
-     */
-    public function level()
-    {
-        return ($role = $this->getRoles()->sortByDesc('level')->first()) ? $role->level : 0;
-    }
-
-    /**
      * Get all permissions from roles.
      *
      * @return Builder
@@ -195,7 +187,6 @@ trait HasRoleAndPermission
             ->join('permission_role', 'permission_role.permission_id', '=', 'permissions.id')
             ->join('roles', 'roles.id', '=', 'permission_role.role_id')
             ->whereIn('roles.id', $this->getRoles()->pluck('id')->toArray())
-            ->orWhere('roles.level', '<', $this->level())
             ->groupBy(['permissions.id', 'permissions.name', 'permissions.slug', 'permissions.description', 'permissions.model', 'permissions.created_at', 'permissions.updated_at', 'pivot_created_at', 'pivot_updated_at']);
     }
 
@@ -336,11 +327,7 @@ trait HasRoleAndPermission
      */
     public function attachPermission($permission)
     {
-        if ($this->getPermissions()->contains($permission)) {
-            return true;
-        }
-        $this->permissions = null;
-        return $this->userPermissions()->attach($permission);
+        return (!$this->getPermissions()->contains($permission)) ? $this->userPermissions()->attach($permission) : true;
     }
 
     /**

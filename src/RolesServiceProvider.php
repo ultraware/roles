@@ -59,16 +59,6 @@ class RolesServiceProvider extends ServiceProvider
             return '<?php endif; ?>';
         });
 
-        $blade->directive('level', function ($expression) {
-            $level = trim($expression, '()');
-
-            return "<?php if (Auth::check() && Auth::user()->level() >= {$level}): ?>";
-        });
-
-        $blade->directive('endlevel', function () {
-            return '<?php endif; ?>';
-        });
-
         $blade->directive('allowed', function ($expression) {
             return "<?php if (Auth::check() && Auth::user()->allowed({$expression})): ?>";
         });

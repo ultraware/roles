@@ -90,13 +90,6 @@ interface HasRoleAndPermission
     public function syncRoles($roles);
 
     /**
-     * Get role level of a user.
-     *
-     * @return int
-     */
-    public function level();
-
-    /**
      * Get all permissions from roles.
      *
      * @return Builder

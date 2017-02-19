@@ -17,7 +17,8 @@ class CreateRolesTable extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('description')->nullable();
-            $table->integer('level')->default(1);
+            $table->integer('parent_id')->unsigned()->nullable();
+            $table->foreign('parent_id')->references('id')->on('roles');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('roles');
+        Schema::dropIfExists('roles');
     }
 }

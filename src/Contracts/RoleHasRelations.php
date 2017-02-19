@@ -3,8 +3,11 @@
 namespace Ultraware\Roles\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Ultraware\Roles\Models\Permission;
+
 
 interface RoleHasRelations
 {
@@ -21,6 +24,32 @@ interface RoleHasRelations
      * @return BelongsToMany
      */
     public function users();
+
+    /**
+     * Role belongs to parent role.
+     *
+     * @return BelongsTo
+     */
+    public function parent();
+    /**
+     * Roles parent, grand parent, etc.
+     *
+     * @return Collection
+     */
+    public function ancestors();
+    /**
+     * Role has many children roles
+     *
+     * @return HasMany
+     */
+    public function children();
+
+    /**
+     * Roles children, grand children, etc.
+     *
+     * @return Collection
+     */
+    public function descendants();
 
     /**
      * Attach permission to a role.
