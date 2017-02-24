@@ -67,4 +67,17 @@ return [
 
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Field
+    |--------------------------------------------------------------------------
+    |
+    | Field in the database table that serves to identify the name of the 
+    | permission or role, is usually 'slug' but you can specify one of your 
+    | preference, eg: 'uuid'
+    |
+    */
+
+    'field' => 'slug'
+
 ];
