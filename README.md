@@ -77,6 +77,50 @@ And also run migrations.
 
 Include `HasRoleAndPermission` trait and also implement `HasRoleAndPermission` contract inside your `User` model.
 
+In your User model, add the trait.
+```php
+use Ultraware\Roles\Traits\HasRoleAndPermission;
+```
+
+And in your User class.
+```php
+HasRoleAndPermission
+```
+
+Which should look something like this:
+```php
+<?php
+
+namespace App;
+
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Ultraware\Roles\Traits\HasRoleAndPermission;
+
+class User extends Authenticatable
+{
+    use Notifiable, HasRoleAndPermission;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'name', 'email', 'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password', 'remember_token',
+    ];
+}
+```
+
 ## Migrate from bican roles
 If you migrate from bican/roles to ultraware/roles yoe need to update a few things.
 - Change all calls to `can`, `canOne` and `canAll` to `hasPermission`, `hasOnePermission`, `hasAllPermissions`.
