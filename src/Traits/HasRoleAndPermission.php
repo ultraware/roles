@@ -44,7 +44,7 @@ trait HasRoleAndPermission
      */
     public function getRoles()
     {
-        return (!$this->roles) ? $this->roles = $this->roles()->get() : $this->roles;
+        return (null === $this->roles || $this->roles->isEmpty()) ? $this->roles = $this->roles()->get() : $this->roles;
     }
 
     /**
@@ -216,7 +216,7 @@ trait HasRoleAndPermission
      */
     public function getPermissions()
     {
-        return (!$this->permissions) ? $this->permissions = $this->rolePermissions()->get()->merge($this->userPermissions()->get()) : $this->permissions;
+        return (null === $this->permissions || $this->permissions->isEmpty()) ? $this->permissions = $this->rolePermissions()->get()->merge($this->userPermissions()->get()) : $this->permissions;
     }
 
     /**
