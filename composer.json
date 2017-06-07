@@ -1,6 +1,6 @@
 {
-  "name": "ultraware/roles",
-  "description": "Powerful package for handling roles and permissions in Laravel 5.",
+  "name": "marievych/roles",
+  "description": "Powerful package for handling roles and permissions in Laravel 5.4",
   "keywords": [
     "roles",
     "permissions",
@@ -12,7 +12,8 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Ultraware"
+      "name": "Yevhen Marievych",
+        "email": "yevhen.marievych@gmail.com"
     }
   ],
   "require": {
@@ -21,7 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Ultraware\\Roles\\": "src/"
+      "Marievych\\Roles\\": "src/"
     }
   },
   "require-dev": {
