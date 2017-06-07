@@ -2,8 +2,8 @@
 
 use App\User;
 use Illuminate\Database\Eloquent\Collection;
-use Ultraware\Roles\Models\Permission;
-use Ultraware\Roles\Models\Role;
+use Marievych\Roles\Models\Permission;
+use Marievych\Roles\Models\Role;
 
 class HasRoleAndPermissionTest extends \TestCase
 {
