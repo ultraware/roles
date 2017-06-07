@@ -1,8 +1,8 @@
 <?php
 
 use App\User;
-use Ultraware\Roles\Models\Permission;
-use Ultraware\Roles\Models\Role;
+use Marievych\Roles\Models\Permission;
+use Marievych\Roles\Models\Role;
 
 class PermissionHasRelationsTest extends \TestCase
 {
