@@ -2,7 +2,7 @@
 
 namespace Ultraware\Roles;
 
-use Illuminate\Support\ServiceProvider;
+use Marievych\Support\ServiceProvider;
 
 class RolesServiceProvider extends ServiceProvider
 {
