@@ -5,7 +5,7 @@ namespace Ultraware\Roles\Middleware;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Http\Request;
-use Ultraware\Roles\Exceptions\PermissionDeniedException;
+use Marievych\Roles\Exceptions\PermissionDeniedException;
 
 class VerifyPermission
 {
