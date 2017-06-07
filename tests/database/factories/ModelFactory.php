@@ -11,7 +11,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(Ultraware\Roles\Models\Role::class, function (Faker\Generator $faker) {
+$factory->define(Marievych\Roles\Models\Role::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->words(2, true),
         'slug' => $faker->slug(2),
@@ -19,7 +19,7 @@ $factory->define(Ultraware\Roles\Models\Role::class, function (Faker\Generator $
     ];
 });
 
-$factory->define(Ultraware\Roles\Models\Permission::class, function (Faker\Generator $faker) {
+$factory->define(Marievych\Roles\Models\Permission::class, function (Faker\Generator $faker) {
     return [
         'name' => $faker->words(2, true),
         'slug' => $faker->slug(2),
