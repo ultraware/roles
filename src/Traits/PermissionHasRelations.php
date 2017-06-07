@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles\Traits;
+namespace Marievych\Roles\Traits;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
