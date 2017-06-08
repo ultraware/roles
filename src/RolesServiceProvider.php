@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles;
+namespace Marievych\Roles;
 
 use Marievych\Support\ServiceProvider;
 
