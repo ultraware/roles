@@ -78,13 +78,13 @@ use Marievych\Roles\Models\Role;
 $adminRole = Role::create([
     'name' => 'Admin',
     'slug' => 'admin',
-    'description' => '', // optional
-    'level' => 1, // optional, set to 1 by default
+    'description' => '', // optional,
 ]);
 
 $moderatorRole = Role::create([
     'name' => 'Forum Moderator',
     'slug' => 'forum.moderator',
+    'parent_id'=>1, //optional
 ]);
 ```
 
@@ -296,10 +296,6 @@ There are four Blade extensions. Basically, it is replacement for classic if sta
     // user has edit articles permissison
 @endpermission
 
-@level(2) // @if(Auth::check() && Auth::user()->level() >= 2)
-    // user has level 2 or higher
-@endlevel
-
 @allowed('edit', $article) // @if(Auth::check() && Auth::user()->allowed('edit', $article))
     // show edit button
 @endallowed
@@ -313,7 +309,7 @@ There are four Blade extensions. Basically, it is replacement for classic if sta
 
 ### Middleware
 
-This package comes with `VerifyRole`, `VerifyPermission` and `VerifyLevel` middleware. You must add them inside your `app/Http/Kernel.php` file.
+This package comes with `VerifyRole`and `VerifyPermission` middleware. You must add them inside your `app/Http/Kernel.php` file.
 
 ```php
 /**
@@ -327,7 +323,6 @@ protected $routeMiddleware = [
     'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
     'role' => \Marievych\Roles\Middleware\VerifyRole::class,
     'permission' => \Marievych\Roles\Middleware\VerifyPermission::class,
-    'level' => \Marievych\Roles\Middleware\VerifyLevel::class,
 ];
 ```
 
@@ -343,12 +338,6 @@ $router->get('/example', [
 $router->post('/example', [
     'as' => 'example',
     'middleware' => 'permission:edit.articles',
-    'uses' => 'ExampleController@index',
-]);
-
-$router->get('/example', [
-    'as' => 'example',
-    'middleware' => 'level:2', // level >= 2
     'uses' => 'ExampleController@index',
 ]);
 ```
