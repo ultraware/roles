@@ -154,47 +154,53 @@ if ($user->hasRole(['admin', 'moderator'], true)) {
     // The user has all roles
 }
 ```
-# Inheritance
+### Inheritance
 
-If you don't want the inheritance feature in you application, simply ignore the parent_id parameter when you're creating roles.
+> If you don't want the inheritance feature in you application, simply ignore the `parent_id` parameter when you're creating roles.
+
 Roles that are assigned a parent_id of another role are automatically inherited when a user is assigned or inherits the parent role.
 
 Here is an example:
 
 You have 5 administrative groups. Admins, Store Admins, Store Inventory Managers, Blog Admins, and Blog Writers.
 
-Role	Parent
-Admins	
-Store Admins	Admins
-Store Inventory Managers	Store Admins
-Blog Admins	Admins
-Blog Writers	Blog Admins
-The Admins Role is the parent of both Store Admins Role as well as Blog Admins Role.
+Role                       | Parent       |
+-----------                | -----------  |
+Admins                     |              |
+Store Admins               | Admins       |
+Store Inventory Managers   | Store Admins |
+Blog Admins                | Admins       |
+Blog Writers               | Blog Admins  |
 
-While the Store Admins Role is the parent to Store Inventory Managers Role.
+The `Admins Role` is the parent of both `Store Admins Role` as well as `Blog Admins Role`.
 
-And the Blog Admins Role is the parent to Blog Writers.
+While the `Store Admins Role` is the parent to `Store Inventory Managers Role`.
 
-This enables the Admins Role to inherit both Store Inventory Managers Role and Blog Writers Role.
+And the `Blog Admins Role` is the parent to `Blog Writers`.
 
-But the Store Admins Role only inherits the Store Inventory Managers Role,
+This enables the `Admins Role` to inherit both `Store Inventory Managers Role` and `Blog Writers Role`.
 
-And the Blog Admins Role only inherits the Blog Writers Role.
+But the `Store Admins Role` only inherits the `Store Inventory Managers Role`,
+
+And the `Blog Admins Role` only inherits the `Blog Writers Role`.
+
 
 Another Example:
 
-id	slug	parent_id
-1	admin	NULL
-2	admin.user	1
-3	admin.blog	1
-4	blog.writer	3
-5	development	NULL
-Here, admin inherits admin.user, admin.blog, and blog.writer.
+id  | slug        | parent_id   |
+--- | ----------- | ----------- |
+1   | admin       | NULL        |
+2   | admin.user  | 1           |
+3   | admin.blog  | 1           |
+4   | blog.writer | 3           |
+5   | development | NULL        |
 
-While admin.user doesn't inherit anything, and admin.blog inherits blog.writer.
+Here, 
+`admin` inherits `admin.user`, `admin.blog`, and `blog.writer`.
 
-Nothing inherits development and, development doesn't inherit anything.
-### Levels
+While `admin.user` doesn't inherit anything, and `admin.blog` inherits `blog.writer`.
+
+Nothing inherits `development` and, `development` doesn't inherit anything.
 
 When you are creating roles, there is optional parameter `level`. It is set to `1` by default, but you can overwrite it and then you can do something like this:
 
