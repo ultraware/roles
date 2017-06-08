@@ -34,14 +34,14 @@ return [
     |--------------------------------------------------------------------------
     |
     | If you want, you can replace default models from this package by models
-    | you created. Have a look at `Ultraware\Roles\Models\Role` model and
-    | `Ultraware\Roles\Models\Permission` model.
+    | you created. Have a look at `Marievych\Roles\Models\Role` model and
+    | `Marievych\Roles\Models\Permission` model.
     |
     */
 
     'models' => [
-        'role' => Ultraware\Roles\Models\Role::class,
-        'permission' => Ultraware\Roles\Models\Permission::class,
+        'role' => Marievych\Roles\Models\Role::class,
+        'permission' => Marievych\Roles\Models\Permission::class,
     ],
 
     /*

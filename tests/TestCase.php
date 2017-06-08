@@ -12,7 +12,7 @@ class TestCase extends TestBenchTestCase
 
     protected function getPackageProviders($app)
     {
-        return [Ultraware\Roles\RolesServiceProvider::class, TestMigrationsServiceProvider::class];
+        return [Marievych\Roles\RolesServiceProvider::class, TestMigrationsServiceProvider::class];
     }
 
     /**

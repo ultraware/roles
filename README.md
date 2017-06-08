@@ -1,27 +1,20 @@
-[![Build Status](https://travis-ci.org/ultraware/roles.svg?branch=master)](https://travis-ci.org/ultraware/roles)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ultraware/roles/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ultraware/roles/?branch=5.1)
-[![StyleCI](https://styleci.io/repos/74971525/shield?branch=master)](https://styleci.io/repos/74971525)
-[![Coverage Status](https://coveralls.io/repos/github/ultraware/roles/badge.svg?branch=master)](https://coveralls.io/github/ultraware/roles?branch=5.1)
+# Roles And Permissions For Laravel 5.4
 
-# Roles And Permissions For Laravel 5
-
-Powerful package for handling roles and permissions in Laravel 5.
+Powerful package for handling roles and permissions in Laravel 5.4
 
 - [Installation](#installation)
     - [Composer](#composer)
     - [Service Provider](#service-provider)
     - [Config File And Migrations](#config-file-and-migrations)
     - [HasRoleAndPermission Trait And Contract](#hasroleandpermission-trait-and-contract)
-    - [Migrate from Bican roles](#Migrate-from-bican-roles)
 - [Usage](#usage)
     - [Creating Roles](#creating-roles)
     - [Attaching, Detaching and Syncing Roles](#attaching-detaching-and-syncing-roles)
     - [Checking For Roles](#checking-for-roles)
-    - [Levels](#levels)
+    - [Inheritance](#inheritance)
     - [Creating Permissions](#creating-permissions)
     - [Attaching, Detaching and Syncing Permissions](#attaching-detaching-and-syncing-permissions)
     - [Checking For Permissions](#checking-for-permissions)
-    - [Permissions Inheriting](#permissions-inheriting)
     - [Entity Check](#entity-check)
     - [Blade Extensions](#blade-extensions)
     - [Middleware](#middleware)
@@ -37,10 +30,8 @@ This package is very easy to set up. There are only couple of steps.
 
 Pull this package in through Composer 
 ```
-composer require ultraware/roles
+composer require marievych/roles
 ```
-
-> If you are still using Laravel 5.0, you must pull in version `1.7.*`.
 
 
 ### Service Provider
@@ -55,7 +46,7 @@ Add the package to your application service providers in `config/app.php` file.
     /**
      * Third Party Service Providers...
      */
-    Ultraware\Roles\RolesServiceProvider::class,
+    Marievych\Roles\RolesServiceProvider::class,
 
 ],
 ```
@@ -64,8 +55,8 @@ Add the package to your application service providers in `config/app.php` file.
 
 Publish the package config file and migrations to your application. Run these commands inside your terminal.
 
-    php artisan vendor:publish --provider="Ultraware\Roles\RolesServiceProvider" --tag=config
-    php artisan vendor:publish --provider="Ultraware\Roles\RolesServiceProvider" --tag=migrations
+    php artisan vendor:publish --provider="Marievych\Roles\RolesServiceProvider" --tag=config
+    php artisan vendor:publish --provider="Marievych\Roles\RolesServiceProvider" --tag=migrations
 
 And also run migrations.
 
@@ -77,28 +68,23 @@ And also run migrations.
 
 Include `HasRoleAndPermission` trait and also implement `HasRoleAndPermission` contract inside your `User` model.
 
-## Migrate from bican roles
-If you migrate from bican/roles to ultraware/roles yoe need to update a few things.
-- Change all calls to `can`, `canOne` and `canAll` to `hasPermission`, `hasOnePermission`, `hasAllPermissions`.
-- Change all calls to `is`, `isOne` and `isAll` to `hasRole`, `hasOneRole`, `hasAllRoles`.
-
 ## Usage
 
 ### Creating Roles
 
 ```php
-use Ultraware\Roles\Models\Role;
+use Marievych\Roles\Models\Role;
 
 $adminRole = Role::create([
     'name' => 'Admin',
     'slug' => 'admin',
-    'description' => '', // optional
-    'level' => 1, // optional, set to 1 by default
+    'description' => '', // optional,
 ]);
 
 $moderatorRole = Role::create([
     'name' => 'Forum Moderator',
     'slug' => 'forum.moderator',
+    'parent_id'=>1, //optional
 ]);
 ```
 
@@ -160,27 +146,60 @@ if ($user->hasRole(['admin', 'moderator'], true)) {
     // The user has all roles
 }
 ```
+### Inheritance
 
-### Levels
+> If you don't want the inheritance feature in you application, simply ignore the `parent_id` parameter when you're creating roles.
 
-When you are creating roles, there is optional parameter `level`. It is set to `1` by default, but you can overwrite it and then you can do something like this:
+Roles that are assigned a parent_id of another role are automatically inherited when a user is assigned or inherits the parent role.
 
-```php
-if ($user->level() > 4) {
-    //
-}
-```
+Here is an example:
 
-> If user has multiple roles, method `level` returns the highest one.
+You have 5 administrative groups. Admins, Store Admins, Store Inventory Managers, Blog Admins, and Blog Writers.
 
-`Level` has also big effect on inheriting permissions. About it later.
+Role                       | Parent       |
+-----------                | -----------  |
+Admins                     |              |
+Store Admins               | Admins       |
+Store Inventory Managers   | Store Admins |
+Blog Admins                | Admins       |
+Blog Writers               | Blog Admins  |
+
+The `Admins Role` is the parent of both `Store Admins Role` as well as `Blog Admins Role`.
+
+While the `Store Admins Role` is the parent to `Store Inventory Managers Role`.
+
+And the `Blog Admins Role` is the parent to `Blog Writers`.
+
+This enables the `Admins Role` to inherit both `Store Inventory Managers Role` and `Blog Writers Role`.
+
+But the `Store Admins Role` only inherits the `Store Inventory Managers Role`,
+
+And the `Blog Admins Role` only inherits the `Blog Writers Role`.
+
+
+Another Example:
+
+id  | slug        | parent_id   |
+--- | ----------- | ----------- |
+1   | admin       | NULL        |
+2   | admin.user  | 1           |
+3   | admin.blog  | 1           |
+4   | blog.writer | 3           |
+5   | development | NULL        |
+
+Here, 
+`admin` inherits `admin.user`, `admin.blog`, and `blog.writer`.
+
+While `admin.user` doesn't inherit anything, and `admin.blog` inherits `blog.writer`.
+
+Nothing inherits `development` and, `development` doesn't inherit anything.
 
 ### Creating Permissions
 
 It's very simple thanks to `Permission` model.
 
 ```php
-use Ultraware\Roles\Models\Permission;
+use Marievych\Roles\Models\Permission;
 
 $createUsersPermission = Permission::create([
     'name' => 'Create users',
@@ -200,7 +219,7 @@ You can attach permissions to a role or directly to a specific user (and of cour
 
 ```php
 use App\User;
-use Ultraware\Roles\Models\Role;
+use Marievych\Roles\Models\Role;
 
 $role = Role::find($roleId);
 $role->attachPermission($createUsersPermission); // permission attached to a role
@@ -233,23 +252,13 @@ if ($user->canDeleteUsers()) {
 
 You can check for multiple permissions the same way as roles. You can make use of additional methods like `hasOnePermission` or `hasAllPermissions`.
 
-### Permissions Inheriting
-
-Role with higher level is inheriting permission from roles with lower level.
-
-There is an example of this `magic`:
-
-You have three roles: `user`, `moderator` and `admin`. User has a permission to read articles, moderator can manage comments and admin can create articles. User has a level 1, moderator level 2 and admin level 3. It means, moderator and administrator has also permission to read articles, but administrator can manage comments as well.
-
-> If you don't want permissions inheriting feature in you application, simply ignore `level` parameter when you're creating roles.
-
 ### Entity Check
 
 Let's say you have an article and you want to edit it. This article belongs to a user (there is a column `user_id` in articles table).
 
 ```php
 use App\Article;
-use Ultraware\Roles\Models\Permission;
+use Marievych\Roles\Models\Permission;
 
 $editArticlesPermission = Permission::create([
     'name' => 'Edit articles',
@@ -287,10 +296,6 @@ There are four Blade extensions. Basically, it is replacement for classic if sta
     // user has edit articles permissison
 @endpermission
 
-@level(2) // @if(Auth::check() && Auth::user()->level() >= 2)
-    // user has level 2 or higher
-@endlevel
-
 @allowed('edit', $article) // @if(Auth::check() && Auth::user()->allowed('edit', $article))
     // show edit button
 @endallowed
@@ -304,7 +309,7 @@ There are four Blade extensions. Basically, it is replacement for classic if sta
 
 ### Middleware
 
-This package comes with `VerifyRole`, `VerifyPermission` and `VerifyLevel` middleware. You must add them inside your `app/Http/Kernel.php` file.
+This package comes with `VerifyRole`and `VerifyPermission` middleware. You must add them inside your `app/Http/Kernel.php` file.
 
 ```php
 /**
@@ -316,9 +321,8 @@ protected $routeMiddleware = [
     'auth' => \App\Http\Middleware\Authenticate::class,
     'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
     'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-    'role' => \Ultraware\Roles\Middleware\VerifyRole::class,
-    'permission' => \Ultraware\Roles\Middleware\VerifyPermission::class,
-    'level' => \Ultraware\Roles\Middleware\VerifyLevel::class,
+    'role' => \Marievych\Roles\Middleware\VerifyRole::class,
+    'permission' => \Marievych\Roles\Middleware\VerifyPermission::class,
 ];
 ```
 
@@ -336,15 +340,9 @@ $router->post('/example', [
     'middleware' => 'permission:edit.articles',
     'uses' => 'ExampleController@index',
 ]);
-
-$router->get('/example', [
-    'as' => 'example',
-    'middleware' => 'level:2', // level >= 2
-    'uses' => 'ExampleController@index',
-]);
 ```
 
-It throws `\Ultraware\Roles\Exceptions\RoleDeniedException`, `\Ultraware\Roles\Exceptions\PermissionDeniedException` or `\Ultraware\Roles\Exceptions\LevelDeniedException` exceptions if it goes wrong.
+It throws `\Marievych\Roles\Exceptions\RoleDeniedException`, `\Marievych\Roles\Exceptions\PermissionDeniedException` exceptions if it goes wrong.
 
 You can catch these exceptions inside `app/Exceptions/Handler.php` file and do whatever you want.
 
@@ -358,7 +356,7 @@ You can catch these exceptions inside `app/Exceptions/Handler.php` file and do w
  */
 public function render($request, Exception $e)
 {
-    if ($e instanceof \Ultraware\Roles\Exceptions\RoleDeniedException) {
+    if ($e instanceof \Marievych\Roles\Exceptions\RoleDeniedException) {
         // you can for example flash message, redirect...
         return redirect()->back();
     }
@@ -373,7 +371,7 @@ You can change connection for models, slug separator, models path and there is a
 
 ## More Information
 
-For more information, please have a look at [HasRoleAndPermission](https://github.com/ultraware/roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
+For more information, please have a look at [HasRoleAndPermission](https://github.com/Marievych/roles/blob/master/src/Contracts/HasRoleAndPermission.php) contract.
 
 ## License
 

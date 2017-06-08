@@ -1,8 +1,8 @@
 <?php
 
-namespace Ultraware\Roles;
+namespace Marievych\Roles;
 
-use Illuminate\Support\ServiceProvider;
+use Marievych\Support\ServiceProvider;
 
 class RolesServiceProvider extends ServiceProvider
 {

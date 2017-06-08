@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles\Contracts;
+namespace Marievych\Roles\Contracts;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

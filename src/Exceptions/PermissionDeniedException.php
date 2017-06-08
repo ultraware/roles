@@ -1,6 +1,6 @@
 <?php
 
-namespace Ultraware\Roles\Exceptions;
+namespace Marievych\Roles\Exceptions;
 
 class PermissionDeniedException extends AccessDeniedException
 {

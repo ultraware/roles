@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Ultraware\Roles\Traits\HasRoleAndPermission;
+use Marievych\Roles\Traits\HasRoleAndPermission;
 
 class User extends Model
 {
