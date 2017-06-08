@@ -1,11 +1,6 @@
-[![Build Status](https://travis-ci.org/ultraware/roles.svg?branch=master)](https://travis-ci.org/ultraware/roles)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ultraware/roles/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ultraware/roles/?branch=5.1)
-[![StyleCI](https://styleci.io/repos/74971525/shield?branch=master)](https://styleci.io/repos/74971525)
-[![Coverage Status](https://coveralls.io/repos/github/ultraware/roles/badge.svg?branch=master)](https://coveralls.io/github/ultraware/roles?branch=5.1)
+# Roles And Permissions For Laravel 5.4
 
-# Roles And Permissions For Laravel 5
-
-Powerful package for handling roles and permissions in Laravel 5.
+Powerful package for handling roles and permissions in Laravel 5.4
 
 - [Installation](#installation)
     - [Composer](#composer)
@@ -17,11 +12,10 @@ Powerful package for handling roles and permissions in Laravel 5.
     - [Creating Roles](#creating-roles)
     - [Attaching, Detaching and Syncing Roles](#attaching-detaching-and-syncing-roles)
     - [Checking For Roles](#checking-for-roles)
-    - [Levels](#levels)
+    - [Inheritance](#inheritance)
     - [Creating Permissions](#creating-permissions)
     - [Attaching, Detaching and Syncing Permissions](#attaching-detaching-and-syncing-permissions)
     - [Checking For Permissions](#checking-for-permissions)
-    - [Permissions Inheriting](#permissions-inheriting)
     - [Entity Check](#entity-check)
     - [Blade Extensions](#blade-extensions)
     - [Middleware](#middleware)
@@ -160,7 +154,46 @@ if ($user->hasRole(['admin', 'moderator'], true)) {
     // The user has all roles
 }
 ```
+# Inheritance
 
+If you don't want the inheritance feature in you application, simply ignore the parent_id parameter when you're creating roles.
+Roles that are assigned a parent_id of another role are automatically inherited when a user is assigned or inherits the parent role.
+
+Here is an example:
+
+You have 5 administrative groups. Admins, Store Admins, Store Inventory Managers, Blog Admins, and Blog Writers.
+
+Role	Parent
+Admins	
+Store Admins	Admins
+Store Inventory Managers	Store Admins
+Blog Admins	Admins
+Blog Writers	Blog Admins
+The Admins Role is the parent of both Store Admins Role as well as Blog Admins Role.
+
+While the Store Admins Role is the parent to Store Inventory Managers Role.
+
+And the Blog Admins Role is the parent to Blog Writers.
+
+This enables the Admins Role to inherit both Store Inventory Managers Role and Blog Writers Role.
+
+But the Store Admins Role only inherits the Store Inventory Managers Role,
+
+And the Blog Admins Role only inherits the Blog Writers Role.
+
+Another Example:
+
+id	slug	parent_id
+1	admin	NULL
+2	admin.user	1
+3	admin.blog	1
+4	blog.writer	3
+5	development	NULL
+Here, admin inherits admin.user, admin.blog, and blog.writer.
+
+While admin.user doesn't inherit anything, and admin.blog inherits blog.writer.
+
+Nothing inherits development and, development doesn't inherit anything.
 ### Levels
 
 When you are creating roles, there is optional parameter `level`. It is set to `1` by default, but you can overwrite it and then you can do something like this:
@@ -232,16 +265,6 @@ if ($user->canDeleteUsers()) {
 ```
 
 You can check for multiple permissions the same way as roles. You can make use of additional methods like `hasOnePermission` or `hasAllPermissions`.
-
-### Permissions Inheriting
-
-Role with higher level is inheriting permission from roles with lower level.
-
-There is an example of this `magic`:
-
-You have three roles: `user`, `moderator` and `admin`. User has a permission to read articles, moderator can manage comments and admin can create articles. User has a level 1, moderator level 2 and admin level 3. It means, moderator and administrator has also permission to read articles, but administrator can manage comments as well.
-
-> If you don't want permissions inheriting feature in you application, simply ignore `level` parameter when you're creating roles.
 
 ### Entity Check
 
