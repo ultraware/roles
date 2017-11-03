@@ -3,6 +3,7 @@
 namespace Ultraware\Roles;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Compilers\BladeCompiler;
 
 class RolesServiceProvider extends ServiceProvider
 {
@@ -41,40 +42,40 @@ class RolesServiceProvider extends ServiceProvider
      */
     protected function registerBladeExtensions()
     {
-        $blade = $this->app['view']->getEngineResolver()->resolve('blade')->getCompiler();
+        app()->afterResolving('blade.compiler', function (BladeCompiler $blade) {
+            $blade->directive('role', function ($expression) {
+                return "<?php if (Auth::check() && Auth::user()->hasRole({$expression})): ?>";
+            });
 
-        $blade->directive('role', function ($expression) {
-            return "<?php if (Auth::check() && Auth::user()->hasRole({$expression})): ?>";
-        });
+            $blade->directive('endrole', function () {
+                return '<?php endif; ?>';
+            });
 
-        $blade->directive('endrole', function () {
-            return '<?php endif; ?>';
-        });
+            $blade->directive('permission', function ($expression) {
+                return "<?php if (Auth::check() && Auth::user()->hasPermission({$expression})): ?>";
+            });
 
-        $blade->directive('permission', function ($expression) {
-            return "<?php if (Auth::check() && Auth::user()->hasPermission({$expression})): ?>";
-        });
+            $blade->directive('endpermission', function () {
+                return '<?php endif; ?>';
+            });
 
-        $blade->directive('endpermission', function () {
-            return '<?php endif; ?>';
-        });
+            $blade->directive('level', function ($expression) {
+                $level = trim($expression, '()');
 
-        $blade->directive('level', function ($expression) {
-            $level = trim($expression, '()');
+                return "<?php if (Auth::check() && Auth::user()->level() >= {$level}): ?>";
+            });
 
-            return "<?php if (Auth::check() && Auth::user()->level() >= {$level}): ?>";
-        });
+            $blade->directive('endlevel', function () {
+                return '<?php endif; ?>';
+            });
 
-        $blade->directive('endlevel', function () {
-            return '<?php endif; ?>';
-        });
+            $blade->directive('allowed', function ($expression) {
+                return "<?php if (Auth::check() && Auth::user()->allowed({$expression})): ?>";
+            });
 
-        $blade->directive('allowed', function ($expression) {
-            return "<?php if (Auth::check() && Auth::user()->allowed({$expression})): ?>";
-        });
-
-        $blade->directive('endallowed', function () {
-            return '<?php endif; ?>';
+            $blade->directive('endallowed', function () {
+                return '<?php endif; ?>';
+            });
         });
     }
 }
