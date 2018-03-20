@@ -39,5 +39,12 @@
             "tests/User.php"
         ]
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ultraware\\Roles\\RolesServiceProvider"
+            ]
+        }
+    }
 }
