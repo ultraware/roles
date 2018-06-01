@@ -33,8 +33,10 @@ class VerifyRole
      * @return mixed
      * @throws RoleDeniedException
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next)
     {
+        $role = implode(',', array_slice(func_get_args(), 2));
+
         if ($this->auth->check() && $this->auth->user()->hasRole($role)) {
             return $next($request);
         }

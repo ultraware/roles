@@ -33,8 +33,10 @@ class VerifyPermission
      * @return mixed
      * @throws \Ultraware\Roles\Exceptions\PermissionDeniedException
      */
-    public function handle($request, Closure $next, $permission)
+    public function handle($request, Closure $next)
     {
+        $permission = implode(',', array_slice(func_get_args(), 2));
+   
         if ($this->auth->check() && $this->auth->user()->hasPermission($permission)) {
             return $next($request);
         }
