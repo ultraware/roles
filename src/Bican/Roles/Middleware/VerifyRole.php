@@ -27,16 +27,18 @@ class VerifyRole
     /**
      * Handle an incoming request.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param \Closure $next
-     * @param int|string $role
+     * @param array $roles
      * @return mixed
-     * @throws \Bican\Roles\Exceptions\RoleDeniedException
+     * @throws RoleDeniedException
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next, ...$roles)
     {
-        if ($this->auth->check() && $this->auth->user()->is($role)) {
-            return $next($request);
+        foreach($roles as $role) {
+            if ($this->auth->check() && $this->auth->user()->hasRole($role)) {
+                return $next($request);
+            }
         }
 
         throw new RoleDeniedException($role);
