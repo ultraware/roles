@@ -282,6 +282,8 @@ trait HasRoleAndPermission
     public function checkPermission($permission)
     {
         return $this->getPermissions()->contains(function ($value) use ($permission) {
+            // it always true when 0 compare string (Str::is function)
+            $permission = is_numeric($permission) ? (string)$permission : $permission;
             return $permission == $value->id || Str::is($permission, $value->slug);
         });
     }

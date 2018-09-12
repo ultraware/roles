@@ -18,6 +18,8 @@ class CreatePermissionsTable extends Migration
             $table->string('slug')->unique();
             $table->string('description')->nullable();
             $table->string('model')->nullable();
+            $table->enum('is_show', [1, 0])->default(0)->comment('determine this permission is show when it is used as menu');
+            $table->integer('parent_id')->default(0)->change();
             $table->timestamps();
         });
     }
