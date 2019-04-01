@@ -6,7 +6,7 @@ use Ultraware\Roles\Models\Role;
 
 class PermissionHasRelationsTest extends \TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->withFactories(__DIR__ . '/../../database/factories');

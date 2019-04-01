@@ -1,7 +1,6 @@
 language: php
 sudo: false
 php:
-  - 7.1
   - 7.2
 
 env:
@@ -12,11 +11,11 @@ env:
 matrix:
   fast_finish: true
   include:
-    - php: 7.1
+    - php: 7.2
       env: setup=lowest
-    - php: 7.1
+    - php: 7.2
       env: setup=stable
-    - php: 7.1
+    - php: 7.2
       env: coverage=yes
 
 cache:

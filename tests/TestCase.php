@@ -5,7 +5,7 @@ use Orchestra\Testbench\TestCase as TestBenchTestCase;
 
 class TestCase extends TestBenchTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
